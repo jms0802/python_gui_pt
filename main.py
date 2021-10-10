@@ -61,3 +61,5 @@ win.mainloop()
 
 
 #자동 로그인을 하고 싶다면 '구글드라이브'를 다운 받고 'selenium'라이브러리를 사용한다.
+
+#https://www.youtube.com/watch?v=ajYZ-Ve6KRA&list=WL&index=19
