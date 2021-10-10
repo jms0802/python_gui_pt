@@ -1,40 +1,63 @@
 from tkinter import *
-import requests
-from bs4 import BeautifulSoup
+from PIL import Image, ImageTk   #이미지 열기
 
 win = Tk()
+win.title("Log-in")
+win.geometry("400x400")
+win.option_add("*Font","궁서 15")
 
-win.geometry("700x400")
-win.title("Lotto")
-win.option_add("*Font","맑은고딕 18")
+#네이버 로고
+lab_n = Label(win)
+img= (Image.open("naver_log.jpg"))
+img = img.resize((200, 80))
+new_img = ImageTk.PhotoImage(img)
+lab_n.config(image = new_img)
+lab_n.pack()
 
-ent = Entry(win)
-ent.pack()
-def get_n():
-  n = ent.get()
+#id 라벨
+lab1 = Label(win)
+lab1.config(text="ID")
+lab1.pack()
 
-  url = "https://dhlottery.co.kr/gameResult.do?method=byWin&drwNo={}".format(n)  #로또 사이트
-  req = requests.get(url)
-  soup = BeautifulSoup(req.text, "html.parser")
-  
-  #당첨번호
-  txt1 = soup.find("div", {"class", "num win"}).get_text()
-  win_n = txt1.split("\n")[3:9]
-  #보너스번호
-  txt2 = soup.find("div", {"class", "num bonus"}).get_text()
-  bonus_n = txt2.split("\n")[2]
-  #로또회차
-  txt3 = soup.find("div", {"class", "win_result"}).get_text()
-  round_n = txt3.split("\n")[1]  
+#id 입력창
+ent1 = Entry(win)
+ent1.insert(0, "sample@sample.com")
 
-  print(str(round_n) +"\n당첨번호 = " + str(win_n) + "\n보너스번호 = " + str(bonus_n))  #출력값
+def clear(event):
+  if ent1.get() == "sample@sample.com" :
+    ent1.delete(0, len(ent1.get()))
 
+ent1.bind("<Button-1>", clear)
+ent1.pack()
+
+#pw 라벨
+lab2 = Label(win)
+lab2.config(text="PW")
+lab2.pack()
+
+#pw 입력창
+ent2 = Entry(win)
+ent2.config(show="*")
+ent2.pack()
+
+#로그인 버튼
 btn = Button(win)
-btn.config(text="Lotto")
-btn.config(width = 25, height = 4)
-btn.config(command = get_n)
+btn.config(text="Login")
+
+def login():
+  my_id = ent1.get()
+  my_pw = ent2.get()
+  print(my_id, "\n" + my_pw)
+  lab3.config(text="[Message] Log-in success!")
+
+btn.config(command = login)
 btn.pack()
 
+#메시지 라벨
+lab3 = Label(win)
+lab3.pack()
 
 win.mainloop()
 
+
+#자동 로그인을 하고 싶다면 '구글드라이브'를 다운 받고 'selenium'라이브러리를 사용한다.
