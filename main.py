@@ -1,36 +1,62 @@
 from tkinter import *
+import random
+from datetime import datetime
 
 win = Tk()
-win.geometry("400x300")
-win.title("grid")
+win.geometry("400x150")
+win.title("Aim_game")
 win.option_add("*Font", "궁서 15")
 
-xx=250
-yy=0.7
+#레이블
+lab1 = Label(win)
+lab1.config(text="Number")
+lab1.grid(column = 0, row = 0, padx = 10, pady = 20)
 
-btn = Button(win)
-btn.config(text="{},{}".format(xx,yy))
-btn.place(x=xx,rely=yy)
+#입력창
+ent1 = Entry(win)
+ent1.grid(column = 1, row = 0)
+
+ck = 1
+
+#랜덤 버튼 연속
+def cc():
+  global ck
+  if ck < n:
+    ck += 1
+    btn.destroy()
+    ran_btn()
+  else:
+    fin_time = datetime.now()
+    t_time = (fin_time - start_time).total_seconds()
+    btn.destroy()
+    lab = Label(win)
+    lab.config(text="Clear " + str(t_time) + "sec")
+    lab.pack(pady = 180)
 
 
+#랜덤 버튼
+def ran_btn():
+  global btn
+  btn = Button(win)
+  btn.config(bg = "red")
+  btn.config(command = cc)
+  btn.config(text = ck)
+  btn.place(relx = random.random(), rely= random.random())
 
-column_num = 3
-row_num = 3
+def gstart():
+  global n
+  global start_time
+  n = int(ent1.get())
+  for wg in win.grid_slaves():
+    wg.destroy()
+  win.geometry("400x400")
+  ran_btn()
+  start_time = datetime.now()
 
-for j in range(0,row_num):
-  for i in range(0, column_num):
-    btn1 = Button(win)
-    btn1.config(text="{},{}".format(i,j))
-    btn1.grid(column = i,row = j, padx = 10, pady = 10)
-
-btn2 = Button(win)
-btn2.config(text="span")
-btn2.grid(column = 1, row = 2, columnspan = 2)
-
-
-####   pack은 grid와 같이 쓸 수 없다.
-#btn3 = Button(win)
-#btn3.config(text="pack")
-#btn3.pack(side="right")
+#버튼
+btn1 = Button(win)
+btn1.config(text="START!")
+btn1.config(command = gstart)
+btn1.grid(column = 0, row = 1,columnspan = 2, padx = 30, pady = 10)
 
 win.mainloop()
